@@ -1,0 +1,77 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "OpenSans", "Arial", sans-serif;
+}
+
+@font-face{
+    src: url("font/Open_Sans/OpenSans-Regular.ttf");
+    font-family: "OpenSans";
+}
+
+body{
+    background: linear-gradient(0.25turn, #75c7eb, rgb(152, 228, 196),#ebf8e1,rgb(204, 255, 146), rgb(35, 255, 200));
+}
+
+.cal-body{
+    /*Glassmorphism*/
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(10px);
+    border: 3px rgba(26, 26, 26, 0.2) solid;
+    box-shadow: 1px 1px 3px rgba(107, 107, 107, 0.3);
+    position: relative;
+    left: 20%;
+    transform: translate(-50%,0);
+    top: 50px;
+    border-radius: 20px;
+    height: 560px;
+    width: 330px;
+    user-select: none;
+}
+
+.cal-monitor{
+    position: relative;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(30px);
+    border: 1px rgba(0,0,0,0.3) solid;
+    width: 85%;
+    left: 7.5%;
+    top: 10%;
+    border-radius: 10px;
+    height: 75px;
+}
+
+.cal-row{
+    position: relative;
+    top: 15%;
+    width: 100%;
+    padding-top: 15px;
+    padding-left: 7%;
+}
+
+.cal-btn{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding: 11px;
+    font-size: 18px;
+    margin-left: 2px;
+    border-radius: 100%;
+    box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
+    border: 1px solid rgba(15,15,15,0.4);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.cal-btn:hover{
+    cursor: pointer;
+    background: rgba(170, 170, 170, 0.1);
+}
+
+.cal-btn:active{
+    cursor: pointer;
+    background: rgba(100, 100, 100, 0.1);
+    box-shadow: 0px 0px 2px rgba(43, 43, 43, 0.8);
+}
