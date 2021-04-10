@@ -42,3 +42,7 @@ function test(){
 
 //console.log(test());
 console.log(Calculator("8 / 2 + 3 * 4 - 6"));
+console.log(Calculator("4528 / 2 + 3 * 4 - 6"));
+console.log(Calculator("1248 / 2 + 3 * 4 - 6"));
+console.log(Calculator("8 / 232 + 3 * 4 - 6"));
+console.log(Calculator("8 / 2 + 3 * 4 - 6"));
