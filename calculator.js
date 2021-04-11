@@ -1,48 +1,45 @@
-function Calculator(raw){
-    let inputArr = raw.split(" ")
-    let inputStr = inputArr.join("");
-    // Parse Instructions from input
-    // Start with multiplication and division
-    while (inputArr.filter(x => x == "*" || x == "/").length > 0){
-        let segment = inputStr.match(/([0-9]*)([\*\/])([0-9]*)/g);
-        let current = segment[0];
-        // Extracted Instruction as variables
-        let prefix = Number(current.match(/(?<![\*\/])[0-9]*/)[0]);
-        let operator = current.match(/[\/\*+-]/)[0];
-        let suffix = Number(current.match(/(?<=[\*\/])[0-9]*/)[0]);
+// Global Variable Declarations
 
-        // Execute math command based on operator
-        if (operator == "/"){
-            console.log(prefix / suffix);
-        }
-        else if (operator == "*"){
-            console.log(prefix * suffix);
-        }
-
-        // Replace command segments with answer
-        // try splice, find length to remove and add result in
-        inputStr.splice()
-    }
-    
-    
+// Loading Screen
+function loadDone(){
+    loadScreen = document.getElementById("loading");
+    loadScreen.style.visibility = "hidden";
+    loadScreen.style.opacity = "0";
 }
 
-function test(){
-    let patt = /[0-9]+(?=[a-zA-Z])/g;
-    let str = "01234Hello wor45ld 78.a";
-
-    let patt2 = /(?<=[a-zA-Z])[0-9]+/g;
-    let str2 = "Buzz123_2021";
-    return str2.match(patt2)
+// Button click inputs
+function calWrite(order){
+    calInput = document.getElementById("calInput");
+    calInput.value += order;
 }
 
-// "2 / 2 + 3 * 4 - 6" = 7
-// find "*" and "/" first, extract numberic for both sides
-// which is stopped by another symbol
+function clearInput(){
+    calInput = document.getElementById("calInput");
+    calInput.value = "";
+}
 
-//console.log(test());
-console.log(Calculator("8 / 2 + 3 * 4 - 6"));
-console.log(Calculator("4528 / 2 + 3 * 4 - 6"));
-console.log(Calculator("1248 / 2 + 3 * 4 - 6"));
-console.log(Calculator("8 / 232 + 3 * 4 - 6"));
-console.log(Calculator("8 / 2 + 3 * 4 - 6"));
+// Calculation
+function calExecute(raw){
+    var raw = document.getElementById("calInput").value;
+    var calOutput = document.getElementById("calOutput");
+    // Translate Symbols to math commands
+    raw = raw.replace("x","*");
+    raw = raw.replace("÷","/");
+    // Error Detection
+    if(raw == ""){ return }; // do nothing when input is null
+
+    // Check if input does not contain unexpected input
+    // Proceed only with valid input to avoid eval() being used maliciously
+    if(!(/^[\+\-\*\/0-9]+$/.test(raw))){
+        calOutput.innerText = "ERROR";
+        return
+    };
+
+    calOutput.innerText = eval(raw);
+}
+
+// calExecute("8 / 2 + 3 * 4 - 6");
+// calExecute("4528 / 2 + 3 * 4 - 6");
+// calExecute("1248 / (2 + (3) * 4) - 6");
+// calExecute("8 / 232 + 3 * 4 - 6");
+// calExecute("8 / 2 + 3 * 4 - 6");
