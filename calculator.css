@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "OpenSans", "Arial", sans-serif;
+    font-family: "OpenSans", "Arial", sans-serif !important;
 }
 
 @font-face{
@@ -12,6 +12,7 @@
 
 body{
     background: linear-gradient(0.25turn, #75c7eb, rgb(152, 228, 196),#ebf8e1,rgb(204, 255, 146), rgb(35, 255, 200));
+    user-select: text;
 }
 
 /* Loading Screen */
@@ -24,6 +25,13 @@ body{
     opacity: 1;
     visibility: visible;
     transition: all 0.5s ease-out;
+}
+
+/* Header */
+.myHeader{
+    text-align: center;
+    margin-bottom: 20px;
+    color: rgb(35, 115, 161);
 }
 
 #loading p{
@@ -40,12 +48,11 @@ body{
     /*Glassmorphism*/
     background: rgba(255,255,255,0.45);
     backdrop-filter: blur(10px);
+    left: 50%;
+    transform: translate(-50%,0);
     border: 3px rgba(26, 26, 26, 0.2) solid;
     box-shadow: 1px 1px 3px rgba(107, 107, 107, 0.3);
     position: relative;
-    left: 20%;
-    transform: translate(-50%,0);
-    top: 50px;
     border-radius: 20px;
     height: 560px;
     width: 330px;
@@ -61,20 +68,24 @@ body{
     width: 85%;
     left: 7.5%;
     top: 10%;
-    border-radius: 25px;
-    height: 75px;
+    border-radius: 20px;
+    height: 80px;
     font-size: 20px;
 }
 
 #calInput{
     position: relative;
-    background-color: rgb(255, 255, 255, 0.1);
+    background-color: rgba(255,255,255, 0.1);
     border: none;
     height: 30px;
     width: 90%;
     font-size: 20px;
     margin-top: 5px;
     margin-left: 12px;
+}
+
+#calInput:focus{
+    outline: none;
 }
 
 #calOutput{
@@ -86,6 +97,8 @@ body{
     margin-left: 12px;
     overflow-x: hidden;
     text-align: right;
+    color:rgb(44, 44, 44);
+    transition: all 0.1s;
 }
 
 /* Row to put input buttons in place */
@@ -140,4 +153,8 @@ body{
 /* Special Configuration for specifics */
 .cal-exe-btn{
     background-color: rgba(255, 246, 168, 0.8);
+}
+
+.cal-exe-btn:hover{
+    background-color: rgba(207, 200, 137, 0.8);
 }

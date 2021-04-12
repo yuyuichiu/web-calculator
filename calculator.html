@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS, Bootstrap and Javascript  -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="calculator.css" />
     <script src="calculator.js" delay></script>
+    <!-- Icon  -->
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
 
     <title>Web Calculator</title>
@@ -17,44 +20,74 @@
     </div>
 
     <!-- Main Content-->
-    <h1>Calculator</h1>
-    <p>Self log: Glassmorphism, Fibonacci Matrix, Text scraping</p>
-    <div class="cal-body">
-        <div class="cal-monitor">
-            <input type="text" id="calInput" />
-            <div id="calOutput"></div>
-        </div>
-        <div class="cal-row">
-            <div class="cal-func-btn">&lt;&lt;</div>
-            <div class="cal-func-btn">&gt;&gt;</div>
-            <div class="cal-func-btn" onclick="clearInput()">Clear</div>
-        </div>
-        <div class="cal-row">
-            <div onclick="calWrite('+')" class="cal-btn">+</div>
-            <div onclick="calWrite('-')" class="cal-btn">-</div>
-            <div onclick="calWrite('x')" class="cal-btn">x</div>
-            <div onclick="calWrite('&divide;')" class="cal-btn">&divide;</div>
-            <div onclick="calExecute()" class="cal-btn cal-exe-btn"><p>=</p></div>
-        </div>
-        <div class="cal-row">
-            <div onclick="calWrite('7')" class="cal-btn">7</div>
-            <div onclick="calWrite('8')" class="cal-btn">8</div>
-            <div onclick="calWrite('9')" class="cal-btn">9</div>
-        </div>
-        <div class="cal-row">
-            <div onclick="calWrite('4')" class="cal-btn">4</div>
-            <div onclick="calWrite('5')" class="cal-btn">5</div>
-            <div onclick="calWrite('6')" class="cal-btn">6</div>
-        </div>
-        <div class="cal-row">
-            <div onclick="calWrite('1')" class="cal-btn">1</div>
-            <div onclick="calWrite('2')" class="cal-btn">2</div>
-            <div onclick="calWrite('3')" class="cal-btn">3</div>
-        </div>
-        <div class="cal-row">
-            <div onclick="calWrite('0')" class="cal-btn">0</div>
-            <div onclick="calWrite('.')" class="cal-btn">.</div>
+    <div class="myHeader">
+        <h1>Calculator</h1>
+        <p>Input field is always focused, you can type the instructions directly or through the buttons.</p>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Instructions</h2>
+                <p>To-do List:</p>
+                <ul>
+                    <p>====Functional====</p>
+                    <li>Memory System</li>
+                    <li>Complex Operators</li>
+                    <li>Error Handling</li>
+                    <li>Another way besides eval()</li>
+                    <li>Digit Limitation</li>
+                    <li>Random()</li>
+                    <li>Shortcut Keys</li>
+                    <br>
+                    <p>====Styling====</p>
+                    <li>Theme Change</li>
+                    <li>Light and Dark Theme</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="cal-body">
+                    <div class="cal-monitor">
+                        <input onblur="this.focus()" type="text" id="calInput" autofocus/>
+                        <div id="calOutput">0</div>
+                    </div>
+                    <div class="cal-row">
+                        <div class="cal-func-btn">&lt;&lt;</div>
+                        <div class="cal-func-btn">&gt;&gt;</div>
+                        <div class="cal-func-btn" onclick="clearInput()">Clear</div>
+                    </div>
+                    <div class="cal-row">
+                        <div onclick="calWrite('+')" class="cal-btn">+</div>
+                        <div onclick="calWrite('-')" class="cal-btn">-</div>
+                        <div onclick="calWrite('x')" class="cal-btn">x</div>
+                        <div onclick="calWrite('&divide;')" class="cal-btn">&divide;</div>
+                        <div onclick="calExecute()" class="cal-btn cal-exe-btn"><p>=</p></div>
+                    </div>
+                    <div class="cal-row">
+                        <div onclick="calWrite('7')" class="cal-btn">7</div>
+                        <div onclick="calWrite('8')" class="cal-btn">8</div>
+                        <div onclick="calWrite('9')" class="cal-btn">9</div>
+                    </div>
+                    <div class="cal-row">
+                        <div onclick="calWrite('4')" class="cal-btn">4</div>
+                        <div onclick="calWrite('5')" class="cal-btn">5</div>
+                        <div onclick="calWrite('6')" class="cal-btn">6</div>
+                    </div>
+                    <div class="cal-row">
+                        <div onclick="calWrite('1')" class="cal-btn">1</div>
+                        <div onclick="calWrite('2')" class="cal-btn">2</div>
+                        <div onclick="calWrite('3')" class="cal-btn">3</div>
+                    </div>
+                    <div class="cal-row">
+                        <div onclick="calWrite('0')" class="cal-btn">0</div>
+                        <div onclick="calWrite('.')" class="cal-btn">.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h2>Records</h2>
+            </div>
         </div>
     </div>
+    
 </body>
 </html>
