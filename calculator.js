@@ -46,36 +46,70 @@ function calExecute(){
     // Translate Symbols to operators
     raw = raw.replace(/[x]/g,"*");
     raw = raw.replace(/[÷]/g,"/");
-    // Error Detection
-    if(raw == ""){ return }; // output nothing when input is null
+    // Do nothing when input is null
+    if(raw == ""){ return }
 
-    // Input validity check to avoid eval() being used maliciously
-    // 1. Reject input with invalid characters
-    if(!(/^[\+\-\*\/0-9.]+$/.test(raw))){
+    // a) Reject input with invalid characters
+    // b) Reject input with ends invalidly with operator
+    if(!(/^[\+\-\*\/0-9.]+$/.test(raw)) || !(/[0-9.]$/).test(raw)){
         calOutput.innerText = "Syntax Error";
         return
-    };
+    }
 
     result = eval(raw);
     if (result > 1000000000000 || result < -1000000000000){
         calOutput.innerText = "Overflow";
         return
     }
-    else{
-        calOutput.innerText = result;
-    }
+    else{ calOutput.innerText = result; }
 
     // Negative Value Styling
-    if (result < 0){
-        calOutput.style.color = "rgb(253, 71, 71)";
-    }
+    if (result < 0){ calOutput.style.color = "rgb(253, 71, 71)"; }
 }
 
-// Test Area
+// Test Area ========================================================
+var n1, n2, op;
+
 function testCal(inputStr){
-    // Parse Input as (num,oper,num,oper,num...)
-    let parsed = inputStr.split(/[^0-9]/g);
-    console.log(parsed);
+    rawStr = inputStr;
+    // Parse multiples and divisions
+    const mdPatLocal = /([0-9.]+)([\*\/])([0-9.]+)/
+     
+    while(mdPatLocal.test(rawStr)){
+       let mdComb = rawStr.match(mdPatLocal);
+       // Calculate pair
+       n1 = Number(mdComb[0].match(/[0-9.]+(?=[\*\/])/)[0]);
+       op = mdComb[0].match(/[\*\/]/)[0];
+       n2 = Number(mdComb[0].match(/(?<=[\*\/])[0-9.]+/)[0]);
+       
+       let mdAns = null;
+       if(op === "*"){
+          mdAns = n1 * n2;
+       }
+       else{
+          mdAns = n1 / n2;
+       }
+       rawStr = rawStr.replace(mdPatLocal,String(mdAns));
+    }
+    console.log("*/: " + rawStr)
+    
+    // Parse additions and subtractions
+    const asPatLocal = /([0-9.]+)([\+\-])([0-9.]+)/
+    while(asPatLocal.test(rawStr)){
+       let asComb = rawStr.match(asPatLocal);
+       // Calculate pair
+       n1 = Number(asComb[0].match(/[0-9.]+(?=[\+\-])/)[0]);
+       op = asComb[0].match(/[\+\-]/)[0];
+       n2 = Number(asComb[0].match(/(?<=[\+\-])[0-9.]+/)[0]);
+       
+       let asAns = null;
+       if(op === "+"){
+          asAns = n1 + n2;
+       }
+       else{
+          asAns = n1 - n2;
+       }
+       rawStr = rawStr.replace(asPatLocal,String(asAns));
+    }
+    console.log("+-: " + rawStr)
 }
-
-testCal("2+2-4");
