@@ -1,5 +1,20 @@
 // Global Variable Declarations
 
+// Shortcut Manager
+document.addEventListener("keyup", function(e){
+    switch(e.key){
+        case 'Enter':
+            calExecute();
+            break;
+        case 'Delete':
+            clearInput();
+            break;
+        default:
+            // gets executed if no case is matched
+            console.log(e.key);
+    }
+});
+
 // Loading Screen
 function loadDone(){
     loadScreen = document.getElementById("loading");
@@ -24,7 +39,7 @@ function clearInput(){
 }
 
 // Calculation
-function calExecute(raw){
+function calExecute(){
     var raw = document.getElementById("calInput").value;
     var calOutput = document.getElementById("calOutput");
     calOutput.style.color = "rgb(44, 44, 44)";
@@ -56,8 +71,11 @@ function calExecute(raw){
     }
 }
 
-// calExecute("8 / 2 + 3 * 4 - 6");
-// calExecute("4528 / 2 + 3 * 4 - 6");
-// calExecute("1248 / (2 + (3) * 4) - 6");
-// calExecute("8 / 232 + 3 * 4 - 6");
-// calExecute("8 / 2 + 3 * 4 - 6");
+// Test Area
+function testCal(inputStr){
+    // Parse Input as (num,oper,num,oper,num...)
+    let parsed = inputStr.split(/[^0-9]/g);
+    console.log(parsed);
+}
+
+testCal("2+2-4");

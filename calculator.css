@@ -10,6 +10,12 @@
     font-family: "OpenSans";
 }
 
+@media (max-width: 990px){
+    .hide-on-small{
+        display: none;
+    }
+}
+
 body{
     background: linear-gradient(0.25turn, #75c7eb, rgb(152, 228, 196),#ebf8e1,rgb(204, 255, 146), rgb(35, 255, 200));
     user-select: text;
@@ -43,6 +49,18 @@ body{
     transform: translate(-50%, -50%);
 }
 
+/* Side Section Styling */
+.side-col{
+    text-align: center;
+}
+
+.side-col li{
+    position: relative;
+    left: 5px;
+}
+
+/*  */
+/*  */
 /* Calculator Body */
 .cal-body{
     /*Glassmorphism*/
@@ -156,5 +174,26 @@ body{
 }
 
 .cal-exe-btn:hover{
-    background-color: rgba(207, 200, 137, 0.8);
+    background-color: rgba(255, 239, 96, 0.8);
+}
+
+.cal-exe-btn:active{
+    background-color: rgba(255, 230, 5, 0.8);
+}
+
+.cal-clear-btn{
+    position: absolute;
+    right: 30px;
+    background-color: rgba(255, 109, 109, 0.7);
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+    color: white;
+}
+
+.cal-clear-btn:hover{
+    background-color: rgba(255, 66, 66, 0.7);
+}
+
+.cal-clear-btn:active{
+    background-color: rgba(255, 0, 0, 0.7);
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
 }

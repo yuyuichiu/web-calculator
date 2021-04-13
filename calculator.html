@@ -26,7 +26,7 @@
     </div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 side-col hide-on-small">
                 <h2>Instructions</h2>
                 <p>To-do List:</p>
                 <ul>
@@ -37,7 +37,9 @@
                     <li>Another way besides eval()</li>
                     <li>Digit Limitation</li>
                     <li>Random()</li>
-                    <li>Shortcut Keys</li>
+                    <li>Shortcut Keys - single and multiple keys</li>
+                    <li>Operator at end bug, dot bug</li>
+                    <li>Disable white space</li>
                     <br>
                     <p>====Styling====</p>
                     <li>Theme Change</li>
@@ -53,7 +55,7 @@
                     <div class="cal-row">
                         <div class="cal-func-btn">&lt;&lt;</div>
                         <div class="cal-func-btn">&gt;&gt;</div>
-                        <div class="cal-func-btn" onclick="clearInput()">Clear</div>
+                        <div class="cal-func-btn cal-clear-btn" onclick="clearInput()"><b>Clear</b></div>
                     </div>
                     <div class="cal-row">
                         <div onclick="calWrite('+')" class="cal-btn">+</div>
@@ -83,8 +85,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 side-col">
                 <h2>Records</h2>
+                <p>Shorcut key: Event listenr keyup, temp function to record key input & extract it through "_.key"</p>
+
             </div>
         </div>
     </div>
