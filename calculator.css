@@ -16,15 +16,29 @@
     }
 }
 
-body{
+/* Background */
+.bg{
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    width: 100%;
+    height: 100vh;
     background: linear-gradient(0.25turn, #75c7eb, rgb(152, 228, 196),#ebf8e1,rgb(204, 255, 146), rgb(35, 255, 200));
-    user-select: text;
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.5s ease-out;
+}
+
+.bg-layer{
+    background: rgba(0,0,0,0.3);
+    opacity: 1;
 }
 
 /* Loading Screen */
 #loading{
-    position: absolute;
+    position: fixed;
     z-index: 99999;
+    top: 0;
     width: 100%;
     height: 100vh;
     background: linear-gradient(0.25turn, #75c7eb, rgb(152, 228, 196),#ebf8e1,rgb(204, 255, 146), rgb(35, 255, 200));
@@ -37,7 +51,8 @@ body{
 .myHeader{
     text-align: center;
     margin-bottom: 20px;
-    color: rgb(35, 115, 161);
+    color: rgba(255, 245, 160, 1);
+    transition: color 0.5s;
 }
 
 #loading p{
@@ -64,7 +79,7 @@ body{
 /* Calculator Body */
 .cal-body{
     /*Glassmorphism*/
-    background: rgba(255,255,255,0.45);
+    background: rgba(255, 255, 255, 0.45);
     backdrop-filter: blur(10px);
     left: 50%;
     transform: translate(-50%,0);
@@ -75,6 +90,7 @@ body{
     height: 560px;
     width: 330px;
     user-select: none;
+    transition: 0.5s all;
 }
 
 /* Monitor - input and output */
@@ -182,8 +198,6 @@ body{
 }
 
 .cal-clear-btn{
-    position: absolute;
-    right: 30px;
     background-color: rgba(255, 109, 109, 0.7);
     box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
     color: white;

@@ -18,9 +18,12 @@
     <div id="loading" class="loading">
         <p>Loading...</p>
     </div>
+    <!-- Background Holder -->
+    <div id="bg" class="bg"></div>
+    <div id="bg-layer" class="bg bg-layer"></div>
 
     <!-- Main Content-->
-    <div class="myHeader">
+    <div id="myHeader" class="myHeader">
         <h1>Calculator</h1>
         <p>Input field is always focused, you can type the instructions directly or through the buttons.</p>
     </div>
@@ -33,39 +36,41 @@
                     <p>====Functional====</p>
                     <li>Memory System</li>
                     <li>Complex Operators</li>
-                    <li>Error Handling</li>
-                    <li>Random()</li>
-                    <li>Shortcut Keys - single and multiple keys</li>
-                    <li>Operator at end bug, dot bug</li>
-                    <li>Disable white space</li>
+                    <li>Shortcut Keys - multiple keys</li>
+                    <li>Bracket - calculate without close brackets</li>
                     <br>
                     <p>====Styling====</p>
                     <li>Theme Change</li>
                     <li>Light and Dark Theme</li>
+                    <li>Description of shortcuts</li>
+                    <li>Calculator Styles</li>
                 </ul>
             </div>
             <div class="col-md-4">
-                <div class="cal-body">
+                <div id="cal-body" class="cal-body">
                     <div class="cal-monitor">
                         <input onblur="this.focus()" type="text" id="calInput" autofocus/>
                         <div id="calOutput">0</div>
                     </div>
                     <div class="cal-row">
-                        <div class="cal-func-btn">&lt;&lt;</div>
-                        <div class="cal-func-btn">Random</div>
-                        <div class="cal-func-btn cal-clear-btn" onclick="clearInput()"><b>Clear</b></div>
+                        <div class="cal-func-btn" onclick="calWrite('(')">(</div>
+                        <div class="cal-func-btn" onclick="calWrite(')')">)</div>
+                        <div class="cal-func-btn" onclick="randomInput()">Rand</div>
+                        <div class="cal-func-btn cal-clear-btn" onclick="deleteInput()">Del</div>
+                        <div class="cal-func-btn cal-clear-btn" onclick="clearInput()">Clear</div>
                     </div>
                     <div class="cal-row">
                         <div onclick="calWrite('+')" class="cal-btn">+</div>
                         <div onclick="calWrite('-')" class="cal-btn">-</div>
                         <div onclick="calWrite('x')" class="cal-btn">x</div>
                         <div onclick="calWrite('&divide;')" class="cal-btn">&divide;</div>
-                        <div onclick="calExecute()" class="cal-btn cal-exe-btn"><p>=</p></div>
+                        <div onclick="calCheck()" class="cal-btn cal-exe-btn"><p>=</p></div>
                     </div>
                     <div class="cal-row">
                         <div onclick="calWrite('7')" class="cal-btn">7</div>
                         <div onclick="calWrite('8')" class="cal-btn">8</div>
                         <div onclick="calWrite('9')" class="cal-btn">9</div>
+                        <div onclick="calWrite('^')" class="cal-btn">^</div>
                     </div>
                     <div class="cal-row">
                         <div onclick="calWrite('4')" class="cal-btn">4</div>
@@ -80,14 +85,14 @@
                     <div class="cal-row">
                         <div onclick="calWrite('0')" class="cal-btn">0</div>
                         <div onclick="calWrite('.')" class="cal-btn">.</div>
-                        <div onclick="calWrite('.')" class="cal-btn">&#127769;</div>
+                        <div onclick="darkMode()" class="cal-btn">&#127769;</div>
                     </div>
                 </div>
             </div>
             <div class="col-md-4 side-col">
                 <h2>Records</h2>
-                <p>Shorcut key: Event listenr keyup, temp function to record key input & extract it through "_.key"</p>
-
+                <p>Shorcut key: Enter => Execute | Delete => Clear Input</p>
+                <p>Random: outputs a random ranged from 0 to 1. (2 decimal)</p>
             </div>
         </div>
     </div>
