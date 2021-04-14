@@ -33,13 +33,11 @@ function darkMode(){
     if(!dark){
         bgLayer.style.opacity = 1;
         myHeader.style.color = "rgb(255, 245, 160)";
-        calBody.style.background = "rgba(204, 203, 198, 0.45)";
         dark = true;
     }
     else{
         bgLayer.style.opacity = 0;
         myHeader.style.color = "rgb(35, 115, 161)";
-        calBody.style.background = "rgba(255, 255, 255, 0.45)";
         dark = false;
     }
 }

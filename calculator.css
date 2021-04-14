@@ -30,8 +30,8 @@
 }
 
 .bg-layer{
-    background: rgba(0,0,0,0.3);
-    opacity: 1;
+    background: rgba(0,0,0,0.7);
+    opacity: 0;
 }
 
 /* Loading Screen */
@@ -51,7 +51,7 @@
 .myHeader{
     text-align: center;
     margin-bottom: 20px;
-    color: rgba(255, 245, 160, 1);
+    color: rgb(35, 115, 161);
     transition: color 0.5s;
 }
 
