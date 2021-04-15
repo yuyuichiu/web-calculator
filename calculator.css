@@ -74,6 +74,26 @@
     left: 5px;
 }
 
+.left{
+    text-align: left;
+    padding-left: 20px;
+}
+
+.keyboard-btn{
+    display: inline-block;
+    text-align: center;
+    padding: 1px 5px 1px 5px;
+    background-color: rgb(231, 231, 231);
+    border: 3px outset grey;
+    font-weight: bold;
+}
+
+.shortcut-description{
+    display: inline-block;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
 /*  */
 /*  */
 /* Calculator Body */
