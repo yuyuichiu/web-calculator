@@ -1,5 +1,6 @@
 // Global Variable Declarations
 var dark = false;
+var calOutput = document.getElementById("calOutput");
 
 // Shortcut Manager
 document.addEventListener("keyup", function(e){
@@ -11,8 +12,7 @@ document.addEventListener("keyup", function(e){
             clearInput();
             break;
         default:
-            // gets executed if no case is matched
-            console.log(e.key);
+            // console.log(e.key);
     }
 });
 
@@ -66,7 +66,7 @@ function clearInput(){
     calOutput.style.color = "rgb(44, 44, 44)";
 }
 
-// Calculation Procedures
+// Vaildation Procedures befre sent to calculate
 function calCheck(){
     var raw = document.getElementById("calInput").value;
     var calOutput = document.getElementById("calOutput");
@@ -82,7 +82,6 @@ function calCheck(){
     // 3. Translate Symbols
     raw = raw.replace(/[x]/g,"*");
     raw = raw.replace(/[÷]/g,"/");
-    raw = raw.replace(/[\^]/g,"**");
     // 4. Turn Random symbol into number (0~1)
     while(/[®]/.test(raw)){
         let rand = Math.floor(Math.random()*101) / 100;
@@ -92,23 +91,12 @@ function calCheck(){
     raw = raw.replace(/[ ]/g,"");
     // 6a) Reject input with invalid characters
     // 6b) Reject input that ends invalidly
-    if(!(/^[\(\)\+\-\*\/0-9.]+$/.test(raw)) || !(/[0-9.\)]$/).test(raw)){
+    if(!(/^[\(\)\+\-\*\/\^0-9.]+$/.test(raw)) || !(/[0-9.\)]$/).test(raw)){
         calOutput.innerText = "Syntax Error";
         return }
     /*   End of Error Detection   */
-    calExecute(raw);
-}
-
-function calExecute(raw){
-    result = eval(raw);
-    if (result > 1000000000000 || result < -1000000000000){
-        calOutput.innerText = "Overflow";
-        return
-    }
-    else{ calOutput.innerText = result; }
-
-    // Negative Value Styling
-    if (result < 0){ calOutput.style.color = "rgb(253, 71, 71)"; }
+    console.log("Sent: " + raw);
+    calProcess(raw);
 }
 
 function isBracketError(inputStr){
@@ -123,51 +111,112 @@ function isBracketError(inputStr){
         if(rightBrc > leftBrc){ return true }
     }
     return false
-}
+}     /*   end of vaildation   */
 
-// Test Area ========================================================
+// Calculation 
 function calProcess(inputStr){
     let rawStr = inputStr;
-    const brPatLocal = /\([0-9\+\-\*\/]*\)/
-    console.log(rawStr);
+    // brPatLocal searches for bracket operations
+    const brPatLocal = /\([0-9\+\-\*\/\^]*\)/
 
+    // Perform calExe to bracket operations while they exist
     while(brPatLocal.test(rawStr)){
         let hold = rawStr.match(brPatLocal)[0];
+        // Parse the content within brackets
         holdNum = hold.replace(/[\(\)]/g,"");
-        let baked = asmd(holdNum);
+        // and sent to calExe to get answer
+        let baked = calExe(holdNum);
+        // Replace processed answer to operation
         rawStr = rawStr.replace(hold,baked);
     }
 
-    return asmd(rawStr)
+    // Calculate operation without brackets
+    let finalAns = calExe(rawStr);
+    // Sent answer to display function
+    calAnsDisplay(finalAns);
 }
 
-function asmd(inputStr){
+function calExe(inputStr){
+    // Multiplication and division before addition and subtraction
+    // Bracket issue will be handled by calProcess()
     rawStr = inputStr;
-    // Parse multiples and divisions
-    const mdPatLocal = /([0-9.]+)([\*\/\^])([0-9.]+)/
+    // 1. Factor
+    const facPatLocal = /([0-9.]+)([\^])([0-9.]+)/
+    // while multiplication and division pattern exist...
+    while(facPatLocal.test(rawStr)){
+        // Extract Pattern of (a^b)
+        let facComb = rawStr.match(facPatLocal);
+        // Turn line of patterns into fragments
+        n1 = Number(facComb[0].match(/[0-9.]+(?=[\*\/\^])/)[0]);
+        op = facComb[0].match(/[\*\/\^]/)[0];
+        n2 = Number(facComb[0].match(/(?<=[\*\/\^])[0-9.]+/)[0]);
+        // Calculate the fragment
+        let facAns = n1 ** n2;
+        // Replace the line with answer
+        rawStr = rawStr.replace(facPatLocal,String(facAns));
+    }
+    // 2. Deal with (factors,) multiples and divisions
+    const mdPatLocal = /([0-9.]+)([\*\/])([0-9.]+)/
+    // while multiplication and division pattern exist...
     while(mdPatLocal.test(rawStr)){
-       let mdComb = rawStr.match(mdPatLocal);
-       // Extract Fragments of input
-       n1 = Number(mdComb[0].match(/[0-9.]+(?=[\*\/\^])/)[0]);
-       op = mdComb[0].match(/[\*\/\^]/)[0];
-       n2 = Number(mdComb[0].match(/(?<=[\*\/\^])[0-9.]+/)[0]);
-       // Calculate
-       let mdAns = op === "^" ? n1 ** n2 : op === "*" ? n1 * n2 : n1 / n2;
-       rawStr = rawStr.replace(mdPatLocal,String(mdAns));
+        // Extract Pattern of (a*b) / (a/b)
+        let mdComb = rawStr.match(mdPatLocal);
+        console.log("In Cal" + mdComb[0]);
+        // Turn line of patterns into fragments
+        n1 = Number(mdComb[0].match(/[0-9.]+(?=[\*\/\^])/)[0]);
+        op = mdComb[0].match(/[\*\/\^]/)[0];
+        n2 = Number(mdComb[0].match(/(?<=[\*\/\^])[0-9.]+/)[0]);
+        // Calculate the fragment
+        let mdAns = op === "^" ? n1 ** n2 : op === "*" ? n1 * n2 : n1 / n2;
+        // Replace the line with answer
+        rawStr = rawStr.replace(mdPatLocal,String(mdAns));
     }
     
-    // Parse additions and subtractions
+    // 3. Deal with additions and subtractions
     const asPatLocal = /([0-9.]+)([\+\-])([0-9.]+)/
+    // while additional and substraction pattern exist...
     while(asPatLocal.test(rawStr)){
-       let asComb = rawStr.match(asPatLocal);
-       // Extract Fragments of input
-       n1 = Number(asComb[0].match(/[0-9.]+(?=[\+\-])/)[0]);
-       op = asComb[0].match(/[\+\-]/)[0];
-       n2 = Number(asComb[0].match(/(?<=[\+\-])[0-9.]+/)[0]);
-       //Calculate
-       let asAns = op === "+" ? n1 + n2 : n1 - n2;
-       rawStr = rawStr.replace(asPatLocal,String(asAns));
+        // Extract Pattern of (a+b) / (a-b)
+        let asComb = rawStr.match(asPatLocal);
+        // Line of pattern into fragments
+        n1 = Number(asComb[0].match(/[0-9.]+(?=[\+\-])/)[0]);
+        op = asComb[0].match(/[\+\-]/)[0];
+        n2 = Number(asComb[0].match(/(?<=[\+\-])[0-9.]+/)[0]);
+        // Calculate the fragment
+        let asAns = op === "+" ? n1 + n2 : n1 - n2;
+        // Replace the line with answer
+        rawStr = rawStr.replace(asPatLocal,String(asAns));
     }
 
-    return rawStr
+    return rawStr // Return subset answer
+}
+
+function calAnsDisplay(inputStr){
+    let finalAns = Number(inputStr);
+    let calOutput = document.getElementById("calOutput");
+    // Overflow Handling
+    if (finalAns > 1000000000000 || finalAns < -1000000000000){
+        calOutput.innerText = "Overflow";
+        return
+    }
+    else{ calOutput.innerText = finalAns; }
+
+    // Negative Value Styling
+    if (finalAns < 0){ calOutput.style.color = "rgb(253, 71, 71)"; }
+}
+
+// Unused Func Area ========================================================
+function calExecute(raw){
+    // Calculation
+
+
+    // Overflow Handling
+    if (finalAns > 1000000000000 || finalAns < -1000000000000){
+        calOutput.innerText = "Overflow";
+        return
+    }
+    else{ calOutput.innerText = finalAns; }
+
+    // Negative Value Styling
+    if (finalAns < 0){ calOutput.style.color = "rgb(253, 71, 71)"; }
 }
