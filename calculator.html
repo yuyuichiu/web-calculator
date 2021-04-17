@@ -31,26 +31,9 @@
         <div class="row">
             <!-- left side column  -->
             <div class="col-md-4 side-col hide-on-small">
-                <h2>Instructions</h2>
-                <p>To-do List:</p>
-                <ul>
-                    <p>====Functional====</p>
-                    <li>Memory System</li>
-                    <li>Complex Operators</li>
-                    <li>Shortcut Keys - multiple keys</li>
-                    <li>Bracket - calculate without close brackets</li>
-                    <li>Button to disable autofocus</li>
-                    <li>Factorial / Binary Calculation</li>
-                    <br>
-                    <p>====Styling====</p>
-                    <li>Theme Change</li>
-                    <li>Light and Dark Theme</li>
-                    <li>Description of shortcuts</li>
-                    <li>Calculator Styles</li>
-                </ul>
-                <br>
-                <p>exec() is not used</p>
-                <p>Try to do all you can this week and go on</p>
+                <h2>Past History</h2>
+                <!-- Past Calculation Records-->
+                <div class="records">Records<br>5+5 = 25</div>
             </div>
             <!-- Calculator Body  -->
             <div class="col-md-4">
@@ -60,47 +43,44 @@
                         <div id="calOutput">0</div>
                     </div>
                     <div class="cal-row">
-                        <div class="cal-func-btn" onclick="calWrite('(')">(</div>
-                        <div class="cal-func-btn" onclick="calWrite(')')">)</div>
-                        <div class="cal-func-btn" onclick="randomInput()">Rand</div>
-                        <div class="cal-func-btn cal-clear-btn" onclick="deleteInput()">Del</div>
-                        <div class="cal-func-btn cal-clear-btn" onclick="clearInput()">Clear</div>
+                        <div class="cal-func-btn" onclick="MyCal.calWrite('(')">(</div>
+                        <div class="cal-func-btn" onclick="MyCal.calWrite(')')">)</div>
+                        <div class="cal-func-btn" onclick="MyCal.randomInput()">Rand</div>
+                        <div class="cal-func-btn cal-clear-btn" onclick="MyCal.deleteInput()">Del</div>
+                        <div class="cal-func-btn cal-clear-btn" onclick="MyCal.clearInput()">Clear</div>
                     </div>
                     <div class="cal-row">
-                        <div onclick="calWrite('+')" class="cal-btn">+</div>
-                        <div onclick="calWrite('-')" class="cal-btn">-</div>
-                        <div onclick="calWrite('x')" class="cal-btn">x</div>
-                        <div onclick="calWrite('&divide;')" class="cal-btn">&divide;</div>
-                        <div onclick="calCheck()" class="cal-btn cal-exe-btn"><p>=</p></div>
+                        <div onclick="MyCal.calWrite('+')" class="cal-btn">+</div>
+                        <div onclick="MyCal.calWrite('-')" class="cal-btn">-</div>
+                        <div onclick="MyCal.calWrite('x')" class="cal-btn">x</div>
+                        <div onclick="MyCal.calWrite('&divide;')" class="cal-btn">&divide;</div>
+                        <div onclick="MyCal.calCheck()" class="cal-btn cal-exe-btn"><p>=</p></div>
                     </div>
                     <div class="cal-row">
-                        <div onclick="calWrite('7')" class="cal-btn">7</div>
-                        <div onclick="calWrite('8')" class="cal-btn">8</div>
-                        <div onclick="calWrite('9')" class="cal-btn">9</div>
-                        <div onclick="calWrite('^')" class="cal-btn">^</div>
+                        <div onclick="MyCal.calWrite('7')" class="cal-btn">7</div>
+                        <div onclick="MyCal.calWrite('8')" class="cal-btn">8</div>
+                        <div onclick="MyCal.calWrite('9')" class="cal-btn">9</div>
+                        <div onclick="MyCal.calWrite('^')" class="cal-btn">^</div>
                     </div>
                     <div class="cal-row">
-                        <div onclick="calWrite('4')" class="cal-btn">4</div>
-                        <div onclick="calWrite('5')" class="cal-btn">5</div>
-                        <div onclick="calWrite('6')" class="cal-btn">6</div>
+                        <div onclick="MyCal.calWrite('4')" class="cal-btn">4</div>
+                        <div onclick="MyCal.calWrite('5')" class="cal-btn">5</div>
+                        <div onclick="MyCal.calWrite('6')" class="cal-btn">6</div>
                     </div>
                     <div class="cal-row">
-                        <div onclick="calWrite('1')" class="cal-btn">1</div>
-                        <div onclick="calWrite('2')" class="cal-btn">2</div>
-                        <div onclick="calWrite('3')" class="cal-btn">3</div>
+                        <div onclick="MyCal.calWrite('1')" class="cal-btn">1</div>
+                        <div onclick="MyCal.calWrite('2')" class="cal-btn">2</div>
+                        <div onclick="MyCal.calWrite('3')" class="cal-btn">3</div>
                     </div>
                     <div class="cal-row">
-                        <div onclick="calWrite('0')" class="cal-btn">0</div>
-                        <div onclick="calWrite('.')" class="cal-btn">.</div>
+                        <div onclick="MyCal.calWrite('0')" class="cal-btn">0</div>
+                        <div onclick="MyCal.calWrite('.')" class="cal-btn">.</div>
                         <div onclick="darkMode()" class="cal-btn">&#127769;</div>
                     </div>
                 </div>
             </div>
             <!-- Right side column -->
             <div class="col-md-4 side-col">
-                <h2>Records</h2>
-                <p>Shorcut key: Enter => Execute | Delete => Clear Input</p>
-                <p>Random: outputs a random ranged from 0 to 1. (2 decimal)</p>
                 <h2>Shortcut Keys</h2>
                 <div class="left">
                     <div class="keyboard-btn">Enter</div>
@@ -118,6 +98,22 @@
                     <p class="shortcut-description">Operators</p>
                 </div>
                 <p>Note: Normal typing method works</p>
+                <p>To-do List:</p>
+                <ul>
+                    <p>====Functional====</p>
+                    <li>Memory System</li>
+                    <li>Complex Operators</li>
+                    <li>Shortcut Keys - multiple keys</li>
+                    <li>Bracket - calculate without close brackets</li>
+                    <li>Button to disable autofocus</li>
+                    <li>Factorial / Binary Calculation</li>
+                    <br>
+                    <p>====Styling====</p>
+                    <li>Theme Change</li>
+                    <li>Light and Dark Theme</li>
+                    <li>Description of shortcuts</li>
+                    <li>Calculator Styles</li>
+                </ul>
             </div>
         </div>
     </div>
