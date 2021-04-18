@@ -106,17 +106,21 @@ class Calculator{
         }
         // 5. Eliminate whitespace
         raw = raw.replace(/[ ]/g,"");
+        console.log("Origin: " + raw);
         // 6. Bracket multiples and division pairs to avoid unexpected results
-        raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9]+|[0-9.]+[\*\/][\-]?\([0-9\+\-\*\/]+\))/g,"($1)");
+        raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9]+)/g,"($1)");
+        raw = raw.replace(/([0-9.]+[\*\/][\-]?\([0-9\+\-\*\/]+\))/g,"($1)");
         // 7. Turn +(n) || -(n) into +1(n) and -1(n)
         raw = raw.replace(/([\+\-])[\(]/g,"$11(");
-        // 8. Apply implied multiplication "n(" || ")(" || ")n"
-        let im = /([\-]?[0-9.]+)([\(][\-]?[0-9.]+)|([\)])([\-]?[0-9.]+)|(\))(\()/;
+        // 8. Apply implied multiplication "n(" || ")("
+        let im = /([\-]?[0-9.]+)([\(][\-]?[0-9.]+)|(\))(\()/;
         while(im.test(raw)){
             raw = raw.replace(/([\-]?[0-9.]+)([\(][\-]?[0-9.]+)/,"$1*$2");
-            raw = raw.replace(/([\)])([\-]?[0-9.]+)/,"$1*$2");
             raw = raw.replace(/(\))(\()/,"$1*$2");
         }
+        // 8i. Bracket newly created multiplications and divisions
+        raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9]+)/g,"($1)");
+        raw = raw.replace(/([0-9.]+[\*\/][\-]?\([0-9\+\-\*\/]+\))/g,"($1)");
         // 9a. Reject Input with invalid operator syntax
         if(/[\+\-]{3,/.test(raw)){
             calOutput.innerText = "Syntax Error";
@@ -211,7 +215,7 @@ class Calculator{
             // Replace the line with answer
             rawStr = rawStr.replace(facPatLocal,String(facAns));
         }
-        console.log("Factored: " + rawStr);
+
         // 2. Deal with (factors,) multiples and divisions
         const mdPatLocal = /([\-]?[0-9.]+)([\*\/])([\-]?[0-9.]+)/
         // while multiplication and division pattern exist...
@@ -227,7 +231,6 @@ class Calculator{
             // Replace the line with answer
             rawStr = rawStr.replace(mdPatLocal,String(mdAns));
         }
-        console.log("Multi and Divided: " + rawStr);
         
         // 3. Deal with additions and subtractions
         const asPatLocal = /([\-]?[0-9.]+)([\+\-])([\-]?[0-9.]+)/
@@ -248,7 +251,6 @@ class Calculator{
             // Replace the line with answer
             rawStr = rawStr.replace(asPatLocal,String(asAns));
         }
-        console.log("Add and subtracted: " + rawStr);
 
         return rawStr // Return subset answer
     }
@@ -314,6 +316,11 @@ function assertion(){
 // Declare MyCal as calculator object
 var MyCal = new Calculator();
 
+/*
+console.log(calExe("-(-5)-(-88)-7+8")); //94
+console.log(calExe("-1*-5-5(-5)+5^2-11*11")); //-116
+console.log(calExe("6792-0*6*5")); //6792
+*/
 
         /* 6. Bracket pre-processing
         raw = this.bracketProcessor(raw);
