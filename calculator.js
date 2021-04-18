@@ -12,6 +12,8 @@ document.addEventListener("keyup", function(e){
         case 'Delete':
             MyCal.clearInput();
             break;
+        case 'a':
+            assertion();
         default:
             // console.log(e.key);
     }
@@ -90,46 +92,60 @@ class Calculator{
         if(this.isBracketError(raw)){
             calOutput.innerText = "Syntax Error";
             return }
-        // 3. Translate Symbols
+        // 3. Throw syntax error for invalid dots (e.g 0..1 is not valid)
+        if(/\.{2,}/.test(raw)){
+            calOutput.innerText = "Syntax Error";
+            return }
+        // 4. Translate Symbols
         raw = raw.replace(/[x]/g,"*");
         raw = raw.replace(/[÷]/g,"/");
-        // 4. Turn Random symbol into number (0~1)
         while(/[®]/.test(raw)){
+            // Turning "Rand" symbols into number (0~1)
             let rand = Math.floor(Math.random()*101) / 100;
             raw = raw.replace(/[®]/,rand);
         }
         // 5. Eliminate whitespace
         raw = raw.replace(/[ ]/g,"");
-        // 6. Edge case for double operators like "5--5" & "5+-5"
-        let newOp = null;
-        while(/[\-\+]{2,}/.test(raw)){
-            let e = raw.match(/[\+\-]{2}/)[0];
-            switch(e){
-                case "++":
-                case "--":
-                    newOp = "+";
-                    break;
-                case "+-":
-                case "-+":
-                    newOp = "-";
-                    break;
-            }
-            raw = raw.replace(/[\+\-]{2}/,newOp);
+        // 6. Bracket multiples and division pairs to avoid unexpected results
+        raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9]+|[0-9.]+[\*\/][\-]?\([0-9\+\-\*\/]+\))/g,"($1)");
+        // 7. Turn +(n) || -(n) into +1(n) and -1(n)
+        raw = raw.replace(/([\+\-])[\(]/g,"$11(");
+        // 8. Apply implied multiplication "n(" || ")(" || ")n"
+        let im = /([\-]?[0-9.]+)([\(][\-]?[0-9.]+)|([\)])([\-]?[0-9.]+)|(\))(\()/;
+        while(im.test(raw)){
+            raw = raw.replace(/([\-]?[0-9.]+)([\(][\-]?[0-9.]+)/,"$1*$2");
+            raw = raw.replace(/([\)])([\-]?[0-9.]+)/,"$1*$2");
+            raw = raw.replace(/(\))(\()/,"$1*$2");
         }
-        // 7. Implied multiplication such as 5(5+6) => 5*(5+6)
-        raw = raw.replace(/(?<=[0-9])\(/g,"*(");
-        // 8. Reject Input with invaild operator syntax
+        // 9a. Reject Input with invalid operator syntax
         if(/[\+\-]{3,/.test(raw)){
             calOutput.innerText = "Syntax Error";
             return 
         }
-        // 8. Reject input with invalid characters / ends invalidly
-        if(!(/^[\(\)\+\-\*\/\^0-9.]+$/.test(raw)) || !(/[0-9.\)]$/).test(raw)){
+        // 9b. Reject input with invalid characters / ends invalidly
+        if(!(/^[\(\)\+\-\*\/\^0-9.]+$/.test(raw)) || !(/[0-9.\)]$/.test(raw))){
+            console.log(raw);
             calOutput.innerText = "Syntax Error";
             return }
         /*   End of Error Detection   */
         console.log("Sent: " + raw);
         this.calProcess(raw);
+    }
+
+    bracketProcessor(str){
+        console.log("Original: " + str);
+        // add bracket to first negative number
+        str = str.replace(/(^[\-][0-9]+)/,"($1)");
+        // add bracket to double operators
+        str = str.replace(/([\+\-])([\+\-])([0-9]+)/g,"$1($2$3)");
+        // add "*" to implied multiplications -2(-3) => (-2*-3)
+        str = str.replace(/(?<=[0-9])\(/g,"*(");
+        // add bracket to valid '*', '/', '^' pairs
+        str = str.replace(/([\(]*[\-]?[0-9.\)]+[\*\/\^][\-]?[0-9.]+)/g,"($1)");
+        // deal with -(-n)
+        str = str.replace(/([\-][\(])([\-]?[0-9]+)/,"-1*($2");
+
+        return str
     }
 
     isBracketError(inputStr){
@@ -148,8 +164,9 @@ class Calculator{
 
     // Calculation 
     calProcess(inputStr){
+        // PEDMAS - parenthesis, exponents, multiplication|division, addition|subtraction
         let rawStr = inputStr;
-        // brPatLocal searches for bracket operations
+        // brPatLocal - searches for brackets
         const brPatLocal = /\([0-9\+\-\*\/\^]*\)/
 
         // Perform calExe to bracket operations while they exist
@@ -162,6 +179,7 @@ class Calculator{
             // Replace processed answer to operation
             rawStr = rawStr.replace(hold,baked);
         }
+        console.log("After clearing brackets " + rawStr);
 
         // Calculate operation without brackets
         let finalAns = this.calExe(rawStr);
@@ -193,13 +211,13 @@ class Calculator{
             // Replace the line with answer
             rawStr = rawStr.replace(facPatLocal,String(facAns));
         }
+        console.log("Factored: " + rawStr);
         // 2. Deal with (factors,) multiples and divisions
         const mdPatLocal = /([\-]?[0-9.]+)([\*\/])([\-]?[0-9.]+)/
         // while multiplication and division pattern exist...
         while(mdPatLocal.test(rawStr)){
             // Extract Pattern of (a*b) / (a/b)
             let mdComb = rawStr.match(mdPatLocal);
-            console.log("In Cal" + mdComb[0]);
             // Turn line of patterns into fragments
             this.n1 = Number(mdComb[0].match(/[\-]?[0-9.]+(?=[\*\/])/)[0]);            
             this.op = mdComb[0].match(/[\*\/]/)[0];
@@ -209,6 +227,7 @@ class Calculator{
             // Replace the line with answer
             rawStr = rawStr.replace(mdPatLocal,String(mdAns));
         }
+        console.log("Multi and Divided: " + rawStr);
         
         // 3. Deal with additions and subtractions
         const asPatLocal = /([\-]?[0-9.]+)([\+\-])([\-]?[0-9.]+)/
@@ -229,6 +248,7 @@ class Calculator{
             // Replace the line with answer
             rawStr = rawStr.replace(asPatLocal,String(asAns));
         }
+        console.log("Add and subtracted: " + rawStr);
 
         return rawStr // Return subset answer
     }
@@ -255,5 +275,64 @@ class Calculator{
         
     }
 }
+
+function sampleGen(){
+    opList = ["0","1","2","3","4","5","6","7","8","9","+","-","+","-","*","/","*","/"];
+    // Generate a random equation
+        let min = 5;
+        let max = 20;   
+        let randLength = Math.floor(Math.random() * (max - min + 1)) + min
+        let generated = String(Math.floor(Math.random() * 10));
+    for(i = 1; i < randLength-1 ;i++){
+        if(/[\+\-\*\/]/.test(generated[i-1])){
+            generated += opList[Math.floor(Math.random() * (opList.length-9))];
+        }
+        else{
+            generated += opList[Math.floor(Math.random() * (opList.length-1))];
+        }
+    }
+    generated += String(Math.floor(Math.random() * 10));
+    return generated
+}
+
+function assertion(){
+    while(true){
+        let sample = sampleGen();
+        let slow = eval(sample);
+        let fast = MyCal.calCheck(sample);
+
+        if(slow !== fast){
+            console.log("==========ERROR==============");
+            console.log(sample);
+            console.log(slow);
+            console.log(fast);
+            return
+        }
+    }
+}
+
 // Declare MyCal as calculator object
 var MyCal = new Calculator();
+
+
+        /* 6. Bracket pre-processing
+        raw = this.bracketProcessor(raw);
+        // 6. Edge case for double operators like "5--5" & "5+-5"
+        let newOp = null;
+        while(/[\-\+]{2,}/.test(raw)){
+            let e = raw.match(/[\+\-]{2}/)[0];
+            switch(e){
+                case "++":
+                case "--":
+                    newOp = "+";
+                    break;
+                case "+-":
+                case "-+":
+                    newOp = "-";
+                    break;
+            }
+            raw = raw.replace(/[\+\-]{2}/,newOp);
+        }
+        // 7. Implied multiplication such as 5(5+6) => 5*(5+6)
+        raw = raw.replace(/(?<=[0-9])\(/g,"*(");
+        */
