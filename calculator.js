@@ -107,6 +107,8 @@ class Calculator{
         // 5. Eliminate whitespace
         raw = raw.replace(/[ ]/g,"");
         console.log("Origin: " + raw);
+        // x. Bracket double operators
+        raw = raw.replace()
         // 6. Bracket multiples and division pairs to avoid unexpected results
         raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9]+)/g,"($1)");
         raw = raw.replace(/([0-9.]+[\*\/][\-]?\([0-9\+\-\*\/]+\))/g,"($1)");
@@ -189,9 +191,7 @@ class Calculator{
         let finalAns = this.calExe(rawStr);
         // Store formula and answer to memory cache
         this.formulaStorage.push(inputStr);
-        console.log(this.formulaStorage);
         this.ansStorage.push(finalAns);
-        console.log(this.ansStorage);
         // Sent answer to display function
         this.calAnsDisplay(finalAns);
     }
