@@ -296,8 +296,9 @@ class Calculator{
         if (finalAns < 0){ calOutput.style.color = "rgb(253, 71, 71)"; }
     }
 
-    // Memory
+    // Memory functions
     calCheckMemory(){
+        // "M" to display memory in console
         console.log(this.formulaStorage);
         console.log(this.ansStorage);
     }
@@ -307,7 +308,7 @@ class Calculator{
         let calInput = document.getElementById("calInput");
         let calOutput = document.getElementById("calOutput");
 
-        // Redo mode - revert last undo
+        // Redo mode "M+" - revert last undo
         if(mode == "redo"){
             // Activiate when there is something in temp cache
             if(this.formulaTemp.length > 0){
@@ -321,7 +322,7 @@ class Calculator{
             return
         }
 
-        // Undo mode - to last state
+        // Undo mode "M-" - to last state
         if(this.ansStorage.length >= 2){
             // Remove last step and store removal to temp storage
             this.formulaTemp.push(this.formulaStorage.pop());
