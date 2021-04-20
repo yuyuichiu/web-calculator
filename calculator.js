@@ -47,9 +47,11 @@ function darkMode(){
 
 /*    Calculator Class    */
 class Calculator{
-    constructor(formulaStorage, ansStorage,n1,op,n2){
+    constructor(formulaStorage, ansStorage, formulaTemp, ansTemp,n1,op,n2){
         this.formulaStorage = [];
         this.ansStorage = [];
+        this.formulaTemp = [];
+        this.ansTemp = [];
         this.n1 = n1;
         this.op = op;
         this.n2 = n2;
@@ -96,7 +98,12 @@ class Calculator{
         if(/\.{2,}/.test(raw)){
             calOutput.innerText = "Syntax Error";
             return }
-        // 4. Translate Symbols
+        // 4. Throw syntax error for unreasonable operators (e.g. ---5)
+        if(/[\+\-]{3,}/.test(raw)){
+            calOutput.innerText = "Syntax Error";
+            return 
+        }
+        // 5. Translate Symbols
         raw = raw.replace(/[x]/g,"*");
         raw = raw.replace(/[÷]/g,"/");
         while(/[®]/.test(raw)){
@@ -104,11 +111,25 @@ class Calculator{
             let rand = Math.floor(Math.random()*101) / 100;
             raw = raw.replace(/[®]/,rand);
         }
-        // 5. Eliminate whitespace
+        // 6. Eliminate whitespace
         raw = raw.replace(/[ ]/g,"");
         console.log("Origin: " + raw);
-        // x. Bracket double operators
-        raw = raw.replace()
+        // 7. Handle double operators
+        let newOp = null;
+        while(/[\-\+]{2,}/.test(raw)){
+            let e = raw.match(/[\+\-]{2}/)[0];
+            switch(e){
+                case "++":
+                case "--":
+                    newOp = "+";
+                    break;
+                case "+-":
+                case "-+":
+                    newOp = "-";
+                    break;
+            }
+            raw = raw.replace(/[\+\-]{2}/,newOp);
+        }
         // 6. Bracket multiples and division pairs to avoid unexpected results
         raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9]+)/g,"($1)");
         raw = raw.replace(/([0-9.]+[\*\/][\-]?\([0-9\+\-\*\/]+\))/g,"($1)");
@@ -189,11 +210,17 @@ class Calculator{
 
         // Calculate operation without brackets
         let finalAns = this.calExe(rawStr);
-        // Store formula and answer to memory cache
-        this.formulaStorage.push(inputStr);
-        this.ansStorage.push(finalAns);
+
         // Sent answer to display function
         this.calAnsDisplay(finalAns);
+
+        // Store formula & answer to memory cache, while clearing temp data
+        if(this.calAnsDisplay(finalAns) !== "error"){ 
+            this.formulaStorage.push(inputStr);
+            this.ansStorage.push(finalAns);
+            this.formulaTemp = [];
+            this.ansTemp = [];
+        }
     }
 
     calExe(inputStr){
@@ -261,7 +288,7 @@ class Calculator{
         // Overflow Handling
         if (finalAns > 1000000000000 || finalAns < -1000000000000){
             calOutput.innerText = "Overflow";
-            return
+            return "error"
         }
         else{ calOutput.innerText = finalAns; }
 
@@ -270,11 +297,43 @@ class Calculator{
     }
 
     // Memory
-    calMemory(){
+    calCheckMemory(){
+        console.log(this.formulaStorage);
+        console.log(this.ansStorage);
+    }
+
+    calMemory(mode){
+        mode = mode || "redo";
         let calInput = document.getElementById("calInput");
         let calOutput = document.getElementById("calOutput");
 
-        
+        // Redo mode - revert last undo
+        if(mode == "redo"){
+            // Activiate when there is something in temp cache
+            if(this.formulaTemp.length > 0){
+                // Revert undo-ed memory to memory cache
+                this.formulaStorage.push(this.formulaTemp.pop());
+                this.ansStorage.push(calOutput.innerText = this.ansTemp.pop());
+                // Amend display value to reverted values
+                calInput.value = this.formulaStorage[this.formulaStorage.length - 1];
+                calOutput.innerText = this.ansStorage[this.ansStorage.length - 1];
+            }
+            return
+        }
+
+        // Undo mode - to last state
+        if(this.ansStorage.length >= 2){
+            // Remove last step and store removal to temp storage
+            this.formulaTemp.push(this.formulaStorage.pop());
+            this.ansTemp.push(this.ansStorage.pop());
+            // Replace display value with updated last set
+            calInput.value = this.formulaStorage[this.formulaStorage.length -1];
+            calOutput.innerText = this.ansStorage[this.ansStorage.length - 1];
+            // Testing log msg
+            console.log(this.formulaStorage);
+            console.log(this.ansStorage);
+            return
+        }
     }
 }
 
