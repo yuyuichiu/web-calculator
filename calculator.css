@@ -67,6 +67,8 @@
 /* Side Section Styling */
 .side-col{
     text-align: center;
+    color: rgba(10,10,10,0.8);
+    transition: all 0.2s linear;
 }
 
 .side-col li{
@@ -82,10 +84,13 @@
 .keyboard-btn{
     display: inline-block;
     text-align: center;
-    padding: 1px 5px 1px 5px;
-    background-color: rgb(231, 231, 231);
-    border: 3px outset grey;
+    padding: 2px 7px 2px 7px;
+    background-color: inherit;
+    border: 1px outset grey;
+    border-radius: 5px;
     font-weight: bold;
+    transition: border 0.2s linear;
+    /* color: rgb(35, 255, 134) */
 }
 
 .shortcut-description{

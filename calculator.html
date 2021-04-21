@@ -31,9 +31,20 @@
         <div class="row">
             <!-- left side column  -->
             <div class="col-md-4 side-col hide-on-small">
-                <h2>Past History</h2>
-                <!-- Past Calculation Records-->
-                <div class="records">Records<br>5+5 = 25</div>
+                <h2>Key Instructions</h2>
+                <p>This calculator adapts ‘PEDMAS’ as order of applying operator.</p>
+                <p>It means the order of applying operators will be parenthesis, exponents, multiplication|division, addition|subtraction. Any same level of operator will go from left to right.</p>
+                <p>For example, 8/2(2+2) will equals to 16 instead of 1.</p>
+                <br>
+                
+                <p>To-do List:</p>
+                <ul>
+                    <p>====Styling====</p>
+                    <li>Theme Change</li>
+                    <li>Light and Dark Theme</li>
+                    <li>Description of shortcuts</li>
+                    <li>Calculator Styles</li>
+                </ul>
             </div>
             <!-- Calculator Body  -->
             <div class="col-md-4">
@@ -61,6 +72,7 @@
                         <div onclick="MyCal.calWrite('8')" class="cal-btn">8</div>
                         <div onclick="MyCal.calWrite('9')" class="cal-btn">9</div>
                         <div onclick="MyCal.calWrite('^')" class="cal-btn">^</div>
+                        <div onclick="MyCal.calCheckMemory()" class="cal-btn">M</div>
                     </div>
                     <div class="cal-row">
                         <div onclick="MyCal.calWrite('4')" class="cal-btn">4</div>
@@ -73,7 +85,6 @@
                         <div onclick="MyCal.calWrite('1')" class="cal-btn">1</div>
                         <div onclick="MyCal.calWrite('2')" class="cal-btn">2</div>
                         <div onclick="MyCal.calWrite('3')" class="cal-btn">3</div>
-                        <div onclick="MyCal.calCheckMemory()" class="cal-btn">M</div>
                     </div>
                     <div class="cal-row">
                         <div onclick="MyCal.calWrite('0')" class="cal-btn">0</div>
@@ -101,22 +112,10 @@
                     <p class="shortcut-description">Operators</p>
                 </div>
                 <p>Note: Normal typing method works</p>
-                <p>To-do List:</p>
-                <ul>
-                    <p>====Functional====</p>
-                    <li>Memory System</li>
-                    <li>Complex Operators</li>
-                    <li>Shortcut Keys - multiple keys</li>
-                    <li>Bracket - calculate without close brackets</li>
-                    <li>Button to disable autofocus</li>
-                    <li>Factorial / Binary Calculation</li>
-                    <br>
-                    <p>====Styling====</p>
-                    <li>Theme Change</li>
-                    <li>Light and Dark Theme</li>
-                    <li>Description of shortcuts</li>
-                    <li>Calculator Styles</li>
-                </ul>
+                
+                <h2>Memory System</h2>
+                <p>The memory system can be accessed by pressing M+ and M- keys, M- will undo your action to the last result produced and M+ will serve to revert the&nbsp;undos&nbsp;made previously.</p>
+                <p>"M" will display your memory cache in console</p>
             </div>
         </div>
     </div>

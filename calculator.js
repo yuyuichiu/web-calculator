@@ -31,16 +31,29 @@ function loadDone(){
 function darkMode(){
     let bgLayer = document.getElementById("bg-layer");
     let myHeader = document.getElementById("myHeader");
-    let calBody = document.getElementById("cal-body");
+    let sideColumns = document.getElementsByClassName("side-col");
+    let showBtns = document.getElementsByClassName("keyboard-btn");
 
     if(!dark){
         bgLayer.style.opacity = 1;
         myHeader.style.color = "rgb(255, 245, 160)";
+        for(i = 0; i < sideColumns.length; i++){
+            sideColumns[i].style.color = "rgba(187, 248, 179, 0.705)";
+        }
+        for(i = 0; i < showBtns.length; i++){
+            showBtns[i].style.border = "1px outset rgba(187, 248, 179, 0.705)";
+        }
         dark = true;
     }
     else{
         bgLayer.style.opacity = 0;
         myHeader.style.color = "rgb(35, 115, 161)";
+        for(i = 0; i < sideColumns.length; i++){
+            sideColumns[i].style.color = "rgba(10,10,10,0.8)";
+        }
+        for(i = 0; i < showBtns.length; i++){
+            showBtns[i].style.border = "1px outset grey";
+        }
         dark = false;
     }
 }
@@ -81,7 +94,7 @@ class Calculator{
         calOutput.style.color = "rgb(44, 44, 44)";
     }
 
-    // Vaildation Procedures before sent to calculate
+    // Validation Procedures before sent to calculate
     calCheck(){
         var raw = document.getElementById("calInput").value;
         var calOutput = document.getElementById("calOutput");
@@ -131,7 +144,7 @@ class Calculator{
             raw = raw.replace(/[\+\-]{2}/,newOp);
         }
         // 6. Bracket multiples and division pairs to avoid unexpected results
-        raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9]+)/g,"($1)");
+        raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9.]+)/g,"($1)");
         raw = raw.replace(/([0-9.]+[\*\/][\-]?\([0-9\+\-\*\/]+\))/g,"($1)");
         // 7. Turn +(n) || -(n) into +1(n) and -1(n)
         raw = raw.replace(/([\+\-])[\(]/g,"$11(");
@@ -142,7 +155,7 @@ class Calculator{
             raw = raw.replace(/(\))(\()/,"$1*$2");
         }
         // 8i. Bracket newly created multiplications and divisions
-        raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9]+)/g,"($1)");
+        raw = raw.replace(/([0-9.]+[\*\/][\-]?[0-9.]+)/g,"($1)");
         raw = raw.replace(/([0-9.]+[\*\/][\-]?\([0-9\+\-\*\/]+\))/g,"($1)");
         // 9a. Reject Input with invalid operator syntax
         if(/[\+\-]{3,/.test(raw)){
@@ -162,15 +175,15 @@ class Calculator{
     bracketProcessor(str){
         console.log("Original: " + str);
         // add bracket to first negative number
-        str = str.replace(/(^[\-][0-9]+)/,"($1)");
+        str = str.replace(/(^[\-][0-9.]+)/,"($1)");
         // add bracket to double operators
-        str = str.replace(/([\+\-])([\+\-])([0-9]+)/g,"$1($2$3)");
+        str = str.replace(/([\+\-])([\+\-])([0-9.]+)/g,"$1($2$3)");
         // add "*" to implied multiplications -2(-3) => (-2*-3)
-        str = str.replace(/(?<=[0-9])\(/g,"*(");
+        str = str.replace(/(?<=[0-9.])\(/g,"*(");
         // add bracket to valid '*', '/', '^' pairs
         str = str.replace(/([\(]*[\-]?[0-9.\)]+[\*\/\^][\-]?[0-9.]+)/g,"($1)");
         // deal with -(-n)
-        str = str.replace(/([\-][\(])([\-]?[0-9]+)/,"-1*($2");
+        str = str.replace(/([\-][\(])([\-]?[0-9.]+)/,"-1*($2");
 
         return str
     }
@@ -194,7 +207,7 @@ class Calculator{
         // PEDMAS - parenthesis, exponents, multiplication|division, addition|subtraction
         let rawStr = inputStr;
         // brPatLocal - searches for brackets
-        const brPatLocal = /\([0-9\+\-\*\/\^]*\)/
+        const brPatLocal = /\([0-9.\+\-\*\/\^]*\)/
 
         // Perform calExe to bracket operations while they exist
         while(brPatLocal.test(rawStr)){
@@ -296,8 +309,9 @@ class Calculator{
         if (finalAns < 0){ calOutput.style.color = "rgb(253, 71, 71)"; }
     }
 
-    // Memory
+    // Memory functions
     calCheckMemory(){
+        // "M" to display memory in console
         console.log(this.formulaStorage);
         console.log(this.ansStorage);
     }
@@ -307,9 +321,9 @@ class Calculator{
         let calInput = document.getElementById("calInput");
         let calOutput = document.getElementById("calOutput");
 
-        // Redo mode - revert last undo
+        // Redo mode "M+" - revert last undo
         if(mode == "redo"){
-            // Activiate when there is something in temp cache
+            // Activate when there is something in temp cache
             if(this.formulaTemp.length > 0){
                 // Revert undo-ed memory to memory cache
                 this.formulaStorage.push(this.formulaTemp.pop());
@@ -321,7 +335,7 @@ class Calculator{
             return
         }
 
-        // Undo mode - to last state
+        // Undo mode "M-" - to last state
         if(this.ansStorage.length >= 2){
             // Remove last step and store removal to temp storage
             this.formulaTemp.push(this.formulaStorage.pop());
@@ -400,5 +414,5 @@ console.log(calExe("6792-0*6*5")); //6792
             raw = raw.replace(/[\+\-]{2}/,newOp);
         }
         // 7. Implied multiplication such as 5(5+6) => 5*(5+6)
-        raw = raw.replace(/(?<=[0-9])\(/g,"*(");
+        raw = raw.replace(/(?<=[0-9.])\(/g,"*(");
         */
