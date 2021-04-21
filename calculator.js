@@ -38,7 +38,7 @@ function darkMode(){
         bgLayer.style.opacity = 1;
         myHeader.style.color = "rgb(255, 245, 160)";
         for(i = 0; i < sideColumns.length; i++){
-            sideColumns[i].style.color = "rgba(187, 248, 179, 0.705)";
+            sideColumns[i].style.color = "rgba(252, 232, 55, 0.7)";
         }
         for(i = 0; i < showBtns.length; i++){
             showBtns[i].style.border = "1px outset rgba(187, 248, 179, 0.705)";
